@@ -1,18 +1,18 @@
 import vector.Vector;
 
 public class Vertex<E> {
-	private Vector<Vertex<E>> edges;
-	private Vector<Integer> weights;
-	private E value;
-	private int weight;
-	private boolean visited;
+	protected Vector<Vertex<E>> edges;
+	protected Vector<Double> weights;
+	protected E value;
+	protected int weight;
+	protected boolean visited;
 	
-	public Vertex (E value) {
+	public Vertex (E value, int w) {
 		this.edges = new Vector<Vertex<E>>();
-		this.weights = new Vector<Integer>();
+		this.weights = new Vector<Double>();
 		this.setValue(value);
 		this.visited = false;
-		this.weight = weight;
+		this.weight = w;
 	}
 
 	/**
@@ -20,9 +20,9 @@ public class Vertex<E> {
 	 * @param v Vertex
 	 * @param i weight
 	 */
-	private void connect (Vertex<E> v, int i) {
+	private void connect (Vertex<E> v, double d) {
 		edges.add(v);
-		weights.add(i);
+		weights.add(d);
 	}
 	
 	/**
@@ -30,9 +30,9 @@ public class Vertex<E> {
 	 * @param v Vertex
 	 * @param i weight
 	 */
-	public void addTwoWayConnection (Vertex<E> v, int i) {
-		connect(v, i);
-		v.connect(this, getWeight());
+	public void addTwoWayConnection (Vertex<E> v) {
+		connect(v, v.calculateWeight(this));
+		v.connect(this, calculateWeight(v));
 	}
 	
 	/**
@@ -40,8 +40,8 @@ public class Vertex<E> {
 	 * @param v Vertex
 	 * @param i weight
 	 */
-	public void addOneWayConnection (Vertex<E> v, int i) {
-		connect(v, i);
+	public void addOneWayConnection (Vertex<E> v) {
+		connect(v, v.calculateWeight(this));
 	}
 	
 	/**
@@ -63,7 +63,7 @@ public class Vertex<E> {
 	 * Returns a vector containing the weights of all edges of this vertex
 	 * @return Vector<Integer> weights
 	 */
-	public Vector<Integer> getWeights () {
+	public Vector<Double> getWeights () {
 		return weights;
 	}
 	
@@ -92,10 +92,9 @@ public class Vertex<E> {
 	}
 	
 	/**
-	 * Calculates and returns the weight of the edge
-	 * @return weight
+	 * Calculates and returns the weight of traveling to this node
 	 */
-	public int getWeight () {
-		return this.weight;
+	public double calculateWeight(Vertex<E> v) {
+		return weight;
 	}
 }
